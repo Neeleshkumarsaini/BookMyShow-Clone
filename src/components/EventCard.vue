@@ -1,17 +1,23 @@
 <template>
+  <router-link to="/event/123">
   <div class="event-card">
-    
+    <!-- Display event data  -->
+ 
     <h4>{{ event.original_title }}</h4>
-    <span>{{ event.genres[0].name }}</span>
-   
+    <p><strong>overview: </strong> {{ event.overview }}</p>
+    <p><strong>votes: </strong> {{event.vote_count}}</p>
+  
   </div>
+</router-link>
 </template>
 
 <script>
 export default {
-  name: 'EventCard',
      props: {
-     event: Object,
+     event: {
+       type: Object,
+       required: true
+     }
    },
 
 }
