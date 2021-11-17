@@ -1,7 +1,6 @@
 <template>
+  <h1 class="movies-heading">Movies</h1>
   <div class="events">
-    <h1>Movies</h1>
-    <!-- <img alt="Vue logo" src="../assets/logo.png" /> -->
     <EventCard v-for="event in events" :key="event.id" :event="event" />
   </div>
 </template>
@@ -40,7 +39,12 @@ export default {
 <style scoped>
 .events {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-wrap: wrap;
+  
+  /* flex-direction: column; */
+  /* align-items: center; */
+}
+.movies-heading{
+  text-align: center;
 }
 </style>
