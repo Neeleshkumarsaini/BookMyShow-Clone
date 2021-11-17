@@ -3,13 +3,14 @@
     <div class="movie-details">
       <img class="movie-image" v-bind:src="image" alt="movie-poster">
       <div class="movie-description">
-        <h1>{{ event.original_title }}</h1>
-        
+        <h1>{{ event.original_title }}</h1> 
         <p><strong>Popularity:</strong> {{ event.popularity }}</p>
         <p><strong>Number of Votes:</strong> {{ event.vote_count }}</p>
         <p><strong>Votes Average:</strong> {{ event.vote_average }}</p>
         <p><strong>Release Date:</strong> {{ event.release_date }}</p>
-        
+        <p><strong>Runtime:</strong> {{ Math.floor(event.runtime/60) +'hr ' + event.runtime%60 + 'min' }}</p>
+        <p><strong>Production Companies:</strong> <span v-for="pc in event.production_companies" :key="pc.id">{{ pc.name + ', ' }}</span></p>
+        <p><strong>Genres:</strong> <span v-for="genre in event.genres" :key="genre.id">{{ genre.name + ', ' }}</span></p> 
       </div>
     </div>
     <div class="movie-ticket-details">
@@ -19,18 +20,19 @@
       <ul class="Halls-list">
         <li v-for="(availaible,index) in availability" :key="index">
           <h3>{{ availaible.city }}</h3>
-          <!-- <p v-for="(ticket, i) in availaible.tickets" :key="i">Tickets Available: {{ ticket }}</p> -->
           <p v-if="availaible.tickets > 0"> Tickets Available: {{ availaible.tickets }}</p>
           <p v-else>All Tickets Booked!!!</p>
         </li>
       </ul>
     </div>
-    <span> <button class="button" v-bind:class="{ disabledButton: availability[0].tickets==0 }" v-on:click="bookTicketNoida">Book Noida Ticket 
+    <span> 
+        <button class="button" v-bind:class="{ disabledButton: availability[0].tickets==0 }" v-on:click="bookTicketNoida">Book Noida Ticket 
         </button>
         <button class="button" v-bind:class="{ disabledButton: availability[1].tickets==0 }" v-on:click="bookTicketDelhi">Book Delhi Ticket 
         </button>
         <button class="button" v-bind:class="{ disabledButton: availability[2].tickets==0 }" v-on:click="bookTicketJaipur">Book Jaipur Ticket 
         </button>
+        
     </span>
   </div>
 </template>
@@ -82,7 +84,7 @@ export default {
   },
   mounted() {
     // fetch event and set local event data
-    EventService.getEvent(this.id)
+    EventService.getEvent(this.$route.params.id)
 	  .then(response => {
 		  this.event = response.data
       console.log(response.data)
@@ -127,7 +129,7 @@ export default {
   display: flex;
   flex-direction: column;
   /* border: 1px solid; */
-  margin-left: 5px;
+  margin-left: 20px;
 }
  .movie-image{
   margin: 10px;
