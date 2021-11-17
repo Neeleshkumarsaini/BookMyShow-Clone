@@ -4,9 +4,6 @@
     <!-- Display event data  -->
     <img v-bind:src="image" alt="movie-poster">
     <h4>{{ event.original_title }}</h4>
-    <p><strong>overview: </strong> {{ event.overview }}</p>
-    <p><strong>votes: </strong> {{event.vote_count}}</p>
-    <!-- <span>{{ event.genres[0].name }}</span> -->
   
   </div>
 </router-link>
@@ -18,11 +15,11 @@ export default {
      event: {
        type: Object,
        required: true
-     }
+     },
    },
    data(){
      return {
-       poster: 'https://image.tmdb.org/t/p/w154'
+       poster: 'https://image.tmdb.org/t/p/w200'
      }
    },
    computed: {
@@ -36,11 +33,12 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .event-card {
-  padding: 20px;
-  width: 250px;
+  padding: 1px;
+  width: 200px;
+  height: 370px;
   cursor: pointer;
   border: 1px solid #39495c;
-  margin-bottom: 18px;
+  margin: 9px;
 }
 .event-card:hover {
   transform: scale(1.01);
