@@ -1,21 +1,30 @@
 <template>
   <div v-if="event">
-    <h1>{{ event.original_title }}</h1>
-    <img v-bind:src="image" alt="movie-poster">
-    <p>{{ event.overview }}</p>
-    <p><strong>Popularity:</strong> {{ event.popularity }}</p>
-    <p><strong>Number of Votes:</strong> {{ event.vote_count }}</p>
-    <p><strong>Votes Average:</strong> {{ event.vote_average }}</p>
-    <p><strong>Release Date:</strong> {{ event.release_date }}</p>
-
-    <h2>Cinema Halls</h2>
-    <ul class="Halls-list">
-      <li v-for="(availaible,index) in availability" :key="index">
-        <h3>{{ availaible.city }}</h3>
-        <p v-if="availaible.tickets > 0"> Tickets Available: {{ availaible.tickets }}</p>
-        <p v-else>All Tickets Booked!!!</p>
-      </li>
-    </ul>
+    <div class="movie-details">
+      <img class="movie-image" v-bind:src="image" alt="movie-poster">
+      <div class="movie-description">
+        <h1>{{ event.original_title }}</h1>
+        
+        <p><strong>Popularity:</strong> {{ event.popularity }}</p>
+        <p><strong>Number of Votes:</strong> {{ event.vote_count }}</p>
+        <p><strong>Votes Average:</strong> {{ event.vote_average }}</p>
+        <p><strong>Release Date:</strong> {{ event.release_date }}</p>
+        
+      </div>
+    </div>
+    <div class="movie-ticket-details">
+      <h2>About the movie</h2>
+      <p class="movie-overview">{{ event.overview }}</p>
+      <h2>Cinema Halls</h2>
+      <ul class="Halls-list">
+        <li v-for="(availaible,index) in availability" :key="index">
+          <h3>{{ availaible.city }}</h3>
+          <!-- <p v-for="(ticket, i) in availaible.tickets" :key="i">Tickets Available: {{ ticket }}</p> -->
+          <p v-if="availaible.tickets > 0"> Tickets Available: {{ availaible.tickets }}</p>
+          <p v-else>All Tickets Booked!!!</p>
+        </li>
+      </ul>
+    </div>
     <span> <button class="button" v-bind:class="{ disabledButton: availability[0].tickets==0 }" v-on:click="bookTicketNoida">Book Noida Ticket 
         </button>
         <button class="button" v-bind:class="{ disabledButton: availability[1].tickets==0 }" v-on:click="bookTicketDelhi">Book Delhi Ticket 
@@ -102,10 +111,32 @@ export default {
     inset 0 0.6em 2em -0.3em rgba(255, 255, 255, 0.15),
     inset 0 0 0em 0.05em rgba(255, 255, 255, 0.12);
   text-align: center;
+  padding: 10px;
   cursor: pointer;
 }
 .disabledButton {
   background-color: #d8d8d8;
   cursor: not-allowed;
+}
+ .movie-details{
+  /* text-align: center; */
+  display: flex;
+  /* border: 1px solid; */
+} 
+.movie-description{
+  display: flex;
+  flex-direction: column;
+  /* border: 1px solid; */
+  margin-left: 5px;
+}
+ .movie-image{
+  margin: 10px;
+} 
+.movie-ticket-details{
+  margin-left: 10px;
+}
+.movie-overview{
+  margin: 20px;
+  margin-right: 30%;
 }
 </style>
