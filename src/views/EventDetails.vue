@@ -20,12 +20,13 @@
       <ul class="Halls-list">
         <li v-for="(availaible,index) in availability" :key="index">
           <h3>{{ availaible.city }}</h3>
-          <p v-if="availaible.tickets > 0"> Tickets Available: {{ availaible.tickets }}</p>
-          <p v-else>All Tickets Booked!!!</p>
+          <!-- <p v-if="availaible.tickets > 0"> Tickets Available: {{ availaible.tickets }}</p>
+          <p v-else>All Tickets Booked!!!</p> -->
+          <p v-for="(cinemaHall, i) in availaible.cinemaHalls" :key="i">{{ cinemaHall.Hall + ':  ' + cinemaHall.tickets }} </p>
         </li>
       </ul>
     </div>
-    <span> 
+    <!-- <span> 
         <button class="button" v-bind:class="{ disabledButton: availability[0].tickets==0 }" v-on:click="bookTicketNoida">Book Noida Ticket 
         </button>
         <button class="button" v-bind:class="{ disabledButton: availability[1].tickets==0 }" v-on:click="bookTicketDelhi">Book Delhi Ticket 
@@ -33,7 +34,7 @@
         <button class="button" v-bind:class="{ disabledButton: availability[2].tickets==0 }" v-on:click="bookTicketJaipur">Book Jaipur Ticket 
         </button>
         
-    </span>
+    </span> -->
   </div>
 </template>
 
@@ -46,15 +47,25 @@ export default {
       event: null,
       availability: [
         {city: 'Noida',
-          tickets: 1
+          cinemaHalls: [
+            { Hall: 'Sargam Hall', tickets: 1},
+            { Hall: 'Amba Cinema', tickets: 2},
+            { Hall: 'Walkway Mall', tickets: 3}
+          ],
         },
         {
           city: 'Delhi',
-          tickets: 2
+          cinemaHalls: [
+            { Hall: 'Mega Mall', tickets: 2},
+            { Hall: 'Star Mall', tickets: 3}
+          ],
         },
         {
           city: 'Jaipur',
-          tickets: 3
+          cinemaHalls: [
+            { Hall: 'Vishal Multiplex', tickets: 3},
+            { Hall: 'Elite Hall', tickets: 4}
+          ],
         }
       ],
       poster: 'https://image.tmdb.org/t/p/w342'
@@ -133,6 +144,7 @@ export default {
 }
  .movie-image{
   margin: 10px;
+  margin-left: 20px;
 } 
 .movie-ticket-details{
   margin-left: 10px;
