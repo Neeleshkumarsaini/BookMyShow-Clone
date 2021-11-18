@@ -10,8 +10,8 @@ const apiClient = axios.create({
 })
 
 export default {
-  getEvents() {
-    return apiClient.get('/popular?api_key=af887aca762fa26e9947081957eeadef&language=en-US&page=1')
+  getEvents(page) {
+    return apiClient.get('/popular?api_key=af887aca762fa26e9947081957eeadef&language=en-US&page='+page)
   }, 
   getEvent(id) {
      return apiClient.get('/'+id+'?api_key=af887aca762fa26e9947081957eeadef&language=en-US&page=1')
