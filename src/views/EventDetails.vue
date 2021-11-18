@@ -71,23 +71,23 @@ export default {
       poster: 'https://image.tmdb.org/t/p/w342'
     }
   },
-  methods: {
-    bookTicketNoida(){
-      if(this.availability[0].tickets > 0){
-        this.availability[0].tickets -=1
-      }
-    },
-    bookTicketDelhi(){
-      if(this.availability[1].tickets > 0){
-        this.availability[1].tickets -=1
-      }
-    },
-    bookTicketJaipur(){
-      if(this.availability[2].tickets > 0){
-        this.availability[2].tickets -=1
-      }
-    }
-  },
+  // methods: {
+  //   bookTicketNoida(){
+  //     if(this.availability[0].tickets > 0){
+  //       this.availability[0].tickets -=1
+  //     }
+  //   },
+  //   bookTicketDelhi(){
+  //     if(this.availability[1].tickets > 0){
+  //       this.availability[1].tickets -=1
+  //     }
+  //   },
+  //   bookTicketJaipur(){
+  //     if(this.availability[2].tickets > 0){
+  //       this.availability[2].tickets -=1
+  //     }
+  //   }
+  // },
   computed: {
     image(){
       return this.poster + this.event.poster_path
