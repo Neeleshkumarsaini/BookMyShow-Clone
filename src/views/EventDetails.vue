@@ -18,23 +18,40 @@
       <p class="movie-overview">{{ event.overview }}</p>
       <h2>Cinema Halls</h2>
       <ul class="Halls-list">
-        <li v-for="(availaible,index) in availability" :key="index">
-          <h3>{{ availaible.city }}</h3>
-          <!-- <p v-if="availaible.tickets > 0"> Tickets Available: {{ availaible.tickets }}</p>
-          <p v-else>All Tickets Booked!!!</p> -->
-          <p v-for="(cinemaHall, i) in availaible.cinemaHalls" :key="i">{{ cinemaHall.Hall + ':  ' + cinemaHall.tickets }} </p>
+          <li>
+            <h3>Noida</h3>
+            <p v-for="(cinemaHall, i) in availability[0].cinemaHalls" :key="i">{{ cinemaHall.Hall }} 
+            <span v-for="(MovieTime, ind) in cinemaHall.MovieTimes" :key="ind">
+              <button v-on:click="bookTicketNoida">{{ MovieTime + ' '}}</button> 
+            </span>
+          </p>
+          <p v-if="availability[0].tickets > 0"> Tickets Available: {{ availability[0].tickets }}</p>
+          <p v-else>All Tickets Booked!!!</p> 
+        </li>
+
+        <li>
+          <h3>Delhi</h3>
+            <p v-for="(cinemaHall, i) in availability[1].cinemaHalls" :key="i">{{ cinemaHall.Hall }} 
+            <span v-for="(MovieTime, ind) in cinemaHall.MovieTimes" :key="ind">
+              <button v-on:click="bookTicketDelhi">{{ MovieTime + ' '}}</button> 
+            </span>
+          </p>
+          <p v-if="availability[1].tickets > 0"> Tickets Available: {{ availability[1].tickets }}</p>
+          <p v-else>All Tickets Booked!!!</p> 
+        </li>
+
+        <li>
+          <h3>Jaipur</h3>
+            <p v-for="(cinemaHall, i) in availability[2].cinemaHalls" :key="i">{{ cinemaHall.Hall }} 
+            <span v-for="(MovieTime, ind) in cinemaHall.MovieTimes" :key="ind">
+              <button v-on:click="bookTicketJaipur">{{ MovieTime + ' '}}</button> 
+            </span>
+          </p>
+          <p v-if="availability[2].tickets > 0"> Tickets Available: {{ availability[2].tickets }}</p>
+          <p v-else>All Tickets Booked!!!</p> 
         </li>
       </ul>
     </div>
-    <!-- <span> 
-        <button class="button" v-bind:class="{ disabledButton: availability[0].tickets==0 }" v-on:click="bookTicketNoida">Book Noida Ticket 
-        </button>
-        <button class="button" v-bind:class="{ disabledButton: availability[1].tickets==0 }" v-on:click="bookTicketDelhi">Book Delhi Ticket 
-        </button>
-        <button class="button" v-bind:class="{ disabledButton: availability[2].tickets==0 }" v-on:click="bookTicketJaipur">Book Jaipur Ticket 
-        </button>
-        
-    </span> -->
   </div>
 </template>
 
@@ -48,46 +65,52 @@ export default {
       availability: [
         {city: 'Noida',
           cinemaHalls: [
-            { Hall: 'Sargam Hall', tickets: 1},
-            { Hall: 'Amba Cinema', tickets: 2},
-            { Hall: 'Walkway Mall', tickets: 3}
+            { Hall: 'Sargam Hall', MovieTimes: ['10:00 AM', '12:30 PM', '9:00 PM']},
+            { Hall: 'Amba Cinema', MovieTimes: ['10:00 AM', '1:00 PM', '9:00 PM']},
+            { Hall: 'Walkway Mall', MovieTimes: ['9:00 AM', '2:30 PM', '7:00 PM']}
           ],
+          tickets: 6
         },
         {
           city: 'Delhi',
           cinemaHalls: [
-            { Hall: 'Mega Mall', tickets: 2},
-            { Hall: 'Star Mall', tickets: 3}
+            { Hall: 'Mega Mall', MovieTimes: ['10:00 AM', '12:30 PM', '9:00 PM']},
+            { Hall: 'Star Mall', MovieTimes: ['10:00 AM', '12:30 PM', '9:00 PM']}
           ],
+          tickets: 7
         },
         {
           city: 'Jaipur',
           cinemaHalls: [
-            { Hall: 'Vishal Multiplex', tickets: 3},
-            { Hall: 'Elite Hall', tickets: 4}
+            { Hall: 'Vishal Multiplex', MovieTimes: ['10:00 AM', '12:30 PM', '9:00 PM']},
+            { Hall: 'Elite Hall', MovieTimes: ['10:00 AM', '12:30 PM', '9:00 PM'] }
           ],
+          tickets: 8
         }
       ],
-      poster: 'https://image.tmdb.org/t/p/w342'
+      poster: 'https://image.tmdb.org/t/p/w342',
     }
   },
-  // methods: {
-  //   bookTicketNoida(){
-  //     if(this.availability[0].tickets > 0){
-  //       this.availability[0].tickets -=1
-  //     }
-  //   },
-  //   bookTicketDelhi(){
-  //     if(this.availability[1].tickets > 0){
-  //       this.availability[1].tickets -=1
-  //     }
-  //   },
-  //   bookTicketJaipur(){
-  //     if(this.availability[2].tickets > 0){
-  //       this.availability[2].tickets -=1
-  //     }
-  //   }
-  // },
+   methods: {
+     addReview(productReview) {
+      this.reviews.push(productReview)
+    },
+     bookTicketNoida(){
+       if(this.availability[0].tickets > 0){
+         this.availability[0].tickets -=1
+       }
+     },
+     bookTicketDelhi(){
+       if(this.availability[1].tickets > 0){
+         this.availability[1].tickets -=1
+       }
+     },
+     bookTicketJaipur(){
+       if(this.availability[2].tickets > 0){
+         this.availability[2].tickets -=1
+       }
+     }
+   },
   computed: {
     image(){
       return this.poster + this.event.poster_path
