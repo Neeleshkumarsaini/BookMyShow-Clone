@@ -1,4 +1,6 @@
 <template>
+  <div class="search-bar"><EventSearch />
+  </div>
   <h1 class="movies-heading">Movies</h1>
   <div class="events">
     <EventCard v-for="event in events" :key="event.id" :event="event" />
@@ -19,18 +21,20 @@
 import EventCard from "@/components/EventCard.vue";
 //import axios from "axios";
 import EventService from "@/services/EventService.js";
+import EventSearch from "@/components/EventSearch.vue";
 import { watchEffect } from 'vue';
 
 export default {
   name: "EventList",
   props: ['page'],
   components: {
-    EventCard
+    EventCard,
+    EventSearch
   },
   data() {
     return {
       events: null,
-      totalPages: 0
+      totalPages: 0,
     }
   },
   created() {
