@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-  <div class="nav-bar"></div>
+  <div class="nav-bar"><h1>BookMyShow</h1> 
+    
+  </div>
   <div id="nav">
     <router-link :to="{ name: 'EventList' }">Events</router-link> | 
     <router-link :to="{ name: 'About' }">About</router-link>
@@ -9,19 +11,22 @@
   </div>
 </template>
 
+
+
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  
   /* padding: 10px; */
   color: #2c3e50;
-  background-color: #92a8d1;
+  /* background-color: #92a8d1; */
 }
 
 #nav {
   padding: 30px;
+  text-align: center;
 }
 
 #nav a {
@@ -34,10 +39,14 @@
 }
 .nav-bar {
   background: linear-gradient(-90deg, #16c0b0,#cf6a88 );
-  height: 60px;
+  height: 70px;
   margin-bottom: 25px;
   -webkit-box-shadow: 0px 2px 15px -12px rgba(0, 0, 0, 0.57);
   -moz-box-shadow: 0px 2px 15px -12px rgba(0, 0, 0, 0.57);
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.57);
+  padding: 4px;
+  display: flex;
+  /* border: 1px solid; */
 }
+
 </style>
