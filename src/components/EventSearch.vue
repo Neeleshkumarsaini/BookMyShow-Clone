@@ -1,9 +1,10 @@
 <template>
   <div class="search">
-    <input type='text' placeholder="search movies" v-model='query' @keyup='getResult(query)'>
+    <input type='text' placeholder="search movies" v-model='query'>
     <div v-for='result in results' :key='result.id'>
     <router-link :to="{ name: 'EventDetails', params: { id: result.id } }">
    <p>{{result.title}}</p>
+   <img v-bind:src="'http://image.tmdb.org/t/p/w185/' +  result.poster_path">
   </router-link>
   </div>
   
@@ -18,17 +19,17 @@
       return {
       query: '',
       results: '',
-      // poster: 'http://image.tmdb.org/t/p/w200/'
+      // poster: 'http://image.tmdb.org/t/p/w500/'
     }
  },
-  methods: {
-    getResult(query) {
-      axios.get('https://api.themoviedb.org/3/search/movie?api_key=af887aca762fa26e9947081957eeadef&query=' + query)
+  watch: {
+    query(val) {
+      axios.get('https://api.themoviedb.org/3/search/movie?api_key=af887aca762fa26e9947081957eeadef&query=' + val)
       .then(response => {
-        this.results = response.data.results 
+        this.results = response.data.results
         }
       )
-    console.log(query)
+    console.log(val)
     }
   },
   }
@@ -41,5 +42,6 @@
     margin: auto;
     width: 10%;
     /* margin-bottom: 10px; */
+    
   }
 </style>
