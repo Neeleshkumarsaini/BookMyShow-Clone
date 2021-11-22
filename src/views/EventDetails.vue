@@ -18,22 +18,24 @@
       <p class="movie-overview">{{ event.overview }}</p>
       <h2>Cinema Halls</h2>
       <ul class="Halls-list">
+        
           <li>
             <h3>Noida</h3>
             <p v-for="(cinemaHall, i) in availability[0].cinemaHalls" :key="i">{{ cinemaHall.Hall }} 
             <span v-for="(MovieTime, ind) in cinemaHall.MovieTimes" :key="ind">
-              <button v-on:click="bookTicketNoida">{{ MovieTime + ' '}}</button> 
+              <button v-on:click="bookTicketNoida(MovieTime, cinemaHall.Hall)">{{ MovieTime + ' '}}</button> 
             </span>
           </p>
           <p v-if="availability[0].tickets > 0"> Tickets Available: {{ availability[0].tickets }}</p>
           <p v-else>All Tickets Booked!!!</p> 
+          
         </li>
 
         <li>
           <h3>Delhi</h3>
             <p v-for="(cinemaHall, i) in availability[1].cinemaHalls" :key="i">{{ cinemaHall.Hall }} 
             <span v-for="(MovieTime, ind) in cinemaHall.MovieTimes" :key="ind">
-              <button v-on:click="bookTicketDelhi">{{ MovieTime + ' '}}</button> 
+              <button v-on:click="bookTicketDelhi(MovieTime, cinemaHall.Hall)">{{ MovieTime + ' '}}</button> 
             </span>
           </p>
           <p v-if="availability[1].tickets > 0"> Tickets Available: {{ availability[1].tickets }}</p>
@@ -44,7 +46,7 @@
           <h3>Jaipur</h3>
             <p v-for="(cinemaHall, i) in availability[2].cinemaHalls" :key="i">{{ cinemaHall.Hall }} 
             <span v-for="(MovieTime, ind) in cinemaHall.MovieTimes" :key="ind">
-              <button v-on:click="bookTicketJaipur">{{ MovieTime + ' '}}</button> 
+              <button v-on:click="bookTicketJaipur(MovieTime, cinemaHall.Hall)">{{ MovieTime + ' '}}</button> 
             </span>
           </p>
           <p v-if="availability[2].tickets > 0"> Tickets Available: {{ availability[2].tickets }}</p>
@@ -52,6 +54,11 @@
         </li>
       </ul>
     </div>
+    
+      <div class="ticket" v-show="bookedTicket.length!=0">
+        <h4>Movie Ticket</h4>
+        <p v-for="(ticket, index) in bookedTicket" :key="index"><strong>Name:</strong> {{ user }} <strong>Hall:</strong> {{ ticket.bookedHall }} <strong>Time:</strong> {{ ticket.bookedSlot }}</p>
+      </div>
   </div>
 </template>
 
@@ -62,6 +69,7 @@ export default {
   data() {
     return {
       event: null,
+      user: '',
       availability: [
         {city: 'Noida',
           cinemaHalls: [
@@ -89,27 +97,36 @@ export default {
         }
       ],
       poster: 'https://image.tmdb.org/t/p/w342',
+      bookedTicket: []
     }
   },
    methods: {
-     addReview(productReview) {
-      this.reviews.push(productReview)
-    },
-     bookTicketNoida(){
+     bookTicketNoida(time, hall){
        if(this.availability[0].tickets > 0){
          this.availability[0].tickets -=1
+         this.user = this.$store.state.user
+         this.bookedTicket.push({ name: this.user, bookedHall: hall, bookedSlot: time}) 
+         
+          console.log(this.user)
        }
+       console.log(time, hall)
      },
-     bookTicketDelhi(){
+     bookTicketDelhi(time, hall){
        if(this.availability[1].tickets > 0){
          this.availability[1].tickets -=1
+         this.user = this.$store.state.user
+         this.bookedTicket.push({name: this.user, bookedHall: hall, bookedSlot: time})
        }
+       console.log(time, hall)
      },
-     bookTicketJaipur(){
+     bookTicketJaipur(time, hall){
        if(this.availability[2].tickets > 0){
          this.availability[2].tickets -=1
+         this.user = this.$store.state.user
+         this.bookedTicket.push({name: this.user, bookedHall: hall, bookedSlot: time})
        }
-     }
+       console.log(time, hall)
+     },
    },
   computed: {
     image(){
@@ -121,7 +138,7 @@ export default {
     EventService.getEvent(this.$route.params.id)
 	  .then(response => {
 		  this.event = response.data
-      console.log(response.data)
+      //console.log(response.data)
 	  })
 	  .catch(error => {
 		  console.log(error)
@@ -175,5 +192,14 @@ export default {
 .movie-overview{
   margin: 20px;
   margin-right: 30%;
+}
+.ticket{
+  border: 1px solid;
+  border-radius: 5px;
+  margin: 10px;
+  margin-right: 60%;
+  padding: 5px;
+  padding-left: 50px;
+  background-color: #92a8d1;
 }
 </style>
