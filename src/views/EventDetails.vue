@@ -18,7 +18,6 @@
       <p class="movie-overview">{{ event.overview }}</p>
       <h2>Cinema Halls</h2>
       <ul class="Halls-list">
-        
           <li>
             <h3>Noida</h3>
             <p v-for="(cinemaHall, i) in availability[0].cinemaHalls" :key="i">{{ cinemaHall.Hall }} 
@@ -27,8 +26,7 @@
             </span>
           </p>
           <p v-if="availability[0].tickets > 0"> Tickets Available: {{ availability[0].tickets }}</p>
-          <p v-else>All Tickets Booked!!!</p> 
-          
+          <p v-else>All Tickets Booked!!!</p>
         </li>
 
         <li>
@@ -54,7 +52,6 @@
         </li>
       </ul>
     </div>
-    
       <div class="ticket" v-show="bookedTicket.length!=0">
         <h4>Movie Ticket</h4>
         <p v-for="(ticket, index) in bookedTicket" :key="index"><strong>Name:</strong> {{ user }} <strong>Hall:</strong> {{ ticket.bookedHall }} <strong>Time:</strong> {{ ticket.bookedSlot }}</p>
@@ -63,12 +60,12 @@
 </template>
 
 <script>
-import EventService from '@/services/EventService.js'
+// import EventService from '@/services/EventService.js'
 export default {
   props: ['id'],
   data() {
     return {
-      event: null,
+      // event: null,
       user: '',
       availability: [
         {city: 'Noida',
@@ -131,18 +128,28 @@ export default {
   computed: {
     image(){
       return this.poster + this.event.poster_path
+    },
+    event(){
+      return this.$store.state.event
     }
   },
   mounted() {
+    this.$store.dispatch('fetchEvent', this.$route.params.id)
+    .catch( error => {
+      this.$router.push({
+        name: 'ErrorDisplay',
+        params: { error: error }
+      })
+    })
     // fetch event and set local event data
-    EventService.getEvent(this.$route.params.id)
-	  .then(response => {
-		  this.event = response.data
-      //console.log(response.data)
-	  })
-	  .catch(error => {
-		  console.log(error)
-	  })
+    // EventService.getEvent(this.$route.params.id)
+	  // .then(response => {
+		//   this.event = response.data
+    //   //console.log(response.data)
+	  // })
+	  // .catch(error => {
+		//   console.log(error)
+	  // })
   }
 }
 </script>
