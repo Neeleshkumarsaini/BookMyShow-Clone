@@ -14,6 +14,7 @@
       >Next &#62;
     </router-link>
   </div> 
+
 </template>
 
 <script>
@@ -22,7 +23,7 @@ import EventCard from "@/components/EventCard.vue";
 //import axios from "axios";
 // import EventService from "@/services/EventService.js";
 import EventSearch from "@/components/EventSearch.vue";
-import { watchEffect } from 'vue';
+// import { watchEffect } from 'vue';
 
 export default {
   name: "EventList",
@@ -31,10 +32,39 @@ export default {
     EventCard,
     EventSearch
   },
+  // data() {
+  //   return {
+  //     totalPages: 0,
+  //   }
+  // },
   created() {
-    watchEffect(() => {
+    // watchEffect(() => {
       this.$store.dispatch('fetchEvents', this.page)
+      .catch( error => {
+      this.$router.push({
+        name: 'ErrorDisplay',
+        params: { error: error }
+      })
     })
+     //this.events = null, -----------This is so when we load another page the current list of events is removed so the user knows that it’s loading.
+	  //get movies data from api
+	  //axios.get('https://api.themoviedb.org/3/movie/550?api_key=af887aca762fa26e9947081957eeadef')
+
+	  // EventService.getEvents(this.page)
+	  // .then(response => {
+		//   this.events = response.data.results
+    //   this.totalPages = response.data.total_pages
+    //   //console.log(response.data.results)
+	  // })
+	  // .catch(error => {
+		//   console.log(error)
+	  // })
+    // })
+  },
+  watch:{
+    page(val){
+      this.$store.dispatch('fetchEvents', val)
+    }
   },
   computed:{
     events(){
