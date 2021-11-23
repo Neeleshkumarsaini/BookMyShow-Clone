@@ -1,8 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import EventList from "../views/EventList.vue";
 import EventDetails from "../views/EventDetails.vue";
-// import EventTickets from "../views/EventTickets.vue";
-
+import ErrorDisplay from "../views/ErrorDisplay.vue"
 
 const routes = [
   {
@@ -27,6 +26,13 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/About.vue"),
   },
+  {
+    path: "/error/:error",
+    name: "ErrorDisplay",
+    props: true,
+    component: ErrorDisplay
+  }
+  
 ];
 
 const router = createRouter({
