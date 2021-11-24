@@ -1,18 +1,24 @@
 <template>
-<div class="error-message">
-    <h4>Oops! There was an error</h4>
-    <p>{{ error }}</p>
+<div class="card border-danger mb-3 error" style="max-width: 18rem;">
+  <div class="card-header">Error</div>
+  <div class="card-body text-danger">
+    <h5 class="card-title">Oops! There was an error</h5>
+    <p class="card-text">{{ error }}</p>
+  </div>
 </div>
 </template>
 
 <script>
+import { mapState } from 'vuex';
     export default {
-        props: ['error']
+        computed:{
+            ...mapState(['error'])
+        }
     }
 </script>
 
 <style>
-    .error-message{
-        text-align: center;
+    .error{
+        margin: auto;
     }
 </style>
