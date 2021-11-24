@@ -1,18 +1,24 @@
 <template>
   <div v-if="event">
-    <div class="movie-details">
-      <img class="movie-image" v-bind:src="image" alt="movie-poster">
-      <div class="movie-description">
-        <h1>{{ event.original_title }}</h1> 
-        <p><strong>Popularity:</strong> {{ event.popularity }}</p>
-        <p><strong>Number of Votes:</strong> {{ event.vote_count }}</p>
-        <p><strong>Votes Average:</strong> {{ event.vote_average }}</p>
-        <p><strong>Release Date:</strong> {{ event.release_date }}</p>
-        <p><strong>Runtime:</strong> {{ Math.floor(event.runtime/60) +'hr ' + event.runtime%60 + 'min' }}</p>
-        <p><strong>Production Companies:</strong> <span v-for="pc in event.production_companies" :key="pc.id">{{ pc.name + ', ' }}</span></p>
-        <p><strong>Genres:</strong> <span v-for="genre in event.genres" :key="genre.id">{{ genre.name + ', ' }}</span></p> 
+    <div class="card mb-3" style="max-width: 90%;">
+  <div class="row no-gutters">
+    <div class="col-md-4">
+      <img v-bind:src="image" alt="movie-poster">
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h1 class="card-title">{{ event.original_title }}</h1>
+        <p class="card-text"><strong>Popularity:</strong> {{ event.popularity }}</p>
+        <p class="card-text"><strong>Number of Votes:</strong> {{ event.vote_count }}</p>
+        <p class="card-text"><strong>Votes Average:</strong> {{ event.vote_average }}</p>
+        <p class="card-text"><strong>Release Date:</strong> {{ event.release_date }}</p>
+        <p class="card-text"><strong>Runtime:</strong> {{ Math.floor(event.runtime/60) +'hr ' + event.runtime%60 + 'min' }}</p>
+        <p class="card-text"><strong>Production Companies:</strong> <span v-for="pc in event.production_companies" :key="pc.id">{{ pc.name + ', ' }}</span></p>
+        <p class="card-text"><strong>Genres:</strong> <span v-for="genre in event.genres" :key="genre.id">{{ genre.name + ', ' }}</span></p> 
       </div>
     </div>
+  </div>
+</div>
     <div class="movie-ticket-details">
       <h2>About the movie</h2>
       <p class="movie-overview">{{ event.overview }}</p>
@@ -26,7 +32,7 @@
             </span>
           </p>
           <p v-if="availability[0].tickets > 0"> Tickets Available: {{ availability[0].tickets }}</p>
-          <p v-else>All Tickets Booked!!!</p>
+          <p v-else>All Tickets Booked!!!</p> 
         </li>
 
         <li>
@@ -52,15 +58,35 @@
         </li>
       </ul>
     </div>
-      <div class="ticket" v-show="bookedTicket.length!=0">
+      <div class="ticket" v-show="bookedNoidaTicket.length!=0">
         <h4>Movie Ticket</h4>
-        <p v-for="(ticket, index) in bookedTicket" :key="index"><strong>Name:</strong> {{ user }} <strong>Hall:</strong> {{ ticket.bookedHall }} <strong>Time:</strong> {{ ticket.bookedSlot }}</p>
+        <h5><strong>Movie: </strong>{{ event.original_title }}</h5>
+        <h5><strong>Place: </strong>Noida</h5>
+        <strong>Name: </strong>{{ user }}
+        <p v-for="(ticket, index) in bookedNoidaTicket" :key="index"> <strong>Hall:</strong> {{ ticket.bookedHall }} <strong>Time:</strong> {{ ticket.bookedSlot }}</p>
+      </div>
+
+      <div class="ticket" v-show="bookedDelhiTicket.length!=0">
+        <h4>Movie Ticket</h4>
+        <h5><strong>Movie: </strong>{{ event.original_title }}</h5>
+        <h5><strong>Place: </strong>Delhi</h5>
+        <strong>Name: </strong>{{ user }}
+        <p v-for="(ticket, index) in bookedDelhiTicket" :key="index"> <strong>Hall:</strong> {{ ticket.bookedHall }} <strong>Time:</strong> {{ ticket.bookedSlot }}</p>
+      </div>
+
+      <div class="ticket" v-show="bookedJaipurTicket.length!=0">
+        <h4>Movie Ticket</h4>
+        <h5><strong>Movie: </strong>{{ event.original_title }}</h5>
+        <h5><strong>Place: </strong>Jaipur</h5>
+        <strong>Name: </strong>{{ user }}
+        <p v-for="(ticket, index) in bookedJaipurTicket" :key="index"> <strong>Hall:</strong> {{ ticket.bookedHall }} <strong>Time:</strong> {{ ticket.bookedSlot }}</p>
       </div>
   </div>
 </template>
 
 <script>
 // import EventService from '@/services/EventService.js'
+import { mapState } from 'vuex';
 export default {
   props: ['id'],
   data() {
@@ -74,7 +100,7 @@ export default {
             { Hall: 'Amba Cinema', MovieTimes: ['10:00 AM', '1:00 PM', '9:00 PM']},
             { Hall: 'Walkway Mall', MovieTimes: ['9:00 AM', '2:30 PM', '7:00 PM']}
           ],
-          tickets: 6
+          tickets: 1
         },
         {
           city: 'Delhi',
@@ -82,7 +108,7 @@ export default {
             { Hall: 'Mega Mall', MovieTimes: ['10:00 AM', '12:30 PM', '9:00 PM']},
             { Hall: 'Star Mall', MovieTimes: ['10:00 AM', '12:30 PM', '9:00 PM']}
           ],
-          tickets: 7
+          tickets: 2
         },
         {
           city: 'Jaipur',
@@ -90,11 +116,13 @@ export default {
             { Hall: 'Vishal Multiplex', MovieTimes: ['10:00 AM', '12:30 PM', '9:00 PM']},
             { Hall: 'Elite Hall', MovieTimes: ['10:00 AM', '12:30 PM', '9:00 PM'] }
           ],
-          tickets: 8
+          tickets: 3
         }
       ],
       poster: 'https://image.tmdb.org/t/p/w342',
-      bookedTicket: []
+      bookedNoidaTicket: [],
+      bookedDelhiTicket: [],
+      bookedJaipurTicket: []
     }
   },
    methods: {
@@ -102,9 +130,9 @@ export default {
        if(this.availability[0].tickets > 0){
          this.availability[0].tickets -=1
          this.user = this.$store.state.user
-         this.bookedTicket.push({ name: this.user, bookedHall: hall, bookedSlot: time}) 
+         this.bookedNoidaTicket.push({ name: this.user, bookedHall: hall, bookedSlot: time}) 
          
-          console.log(this.user)
+          // console.log(this.user)
        }
        console.log(time, hall)
      },
@@ -112,7 +140,7 @@ export default {
        if(this.availability[1].tickets > 0){
          this.availability[1].tickets -=1
          this.user = this.$store.state.user
-         this.bookedTicket.push({name: this.user, bookedHall: hall, bookedSlot: time})
+         this.bookedDelhiTicket.push({name: this.user, bookedHall: hall, bookedSlot: time})
        }
        console.log(time, hall)
      },
@@ -120,7 +148,7 @@ export default {
        if(this.availability[2].tickets > 0){
          this.availability[2].tickets -=1
          this.user = this.$store.state.user
-         this.bookedTicket.push({name: this.user, bookedHall: hall, bookedSlot: time})
+         this.bookedJaipurTicket.push({name: this.user, bookedHall: hall, bookedSlot: time})
        }
        console.log(time, hall)
      },
@@ -129,27 +157,19 @@ export default {
     image(){
       return this.poster + this.event.poster_path
     },
-    event(){
-      return this.$store.state.event
-    }
+    ...mapState(['event'])
+    // event(){
+    //   return this.$store.state.event
+    // }
   },
   mounted() {
     this.$store.dispatch('fetchEvent', this.$route.params.id)
     .catch( error => {
-      this.$router.push({
+      this.$store.dispatch('fetchError', error)
+       this.$router.push({
         name: 'ErrorDisplay',
-        params: { error: error }
-      })
+       })
     })
-    // fetch event and set local event data
-    // EventService.getEvent(this.$route.params.id)
-	  // .then(response => {
-		//   this.event = response.data
-    //   //console.log(response.data)
-	  // })
-	  // .catch(error => {
-		//   console.log(error)
-	  // })
   }
 }
 </script>
@@ -178,21 +198,21 @@ export default {
   background-color: #d8d8d8;
   cursor: not-allowed;
 }
- .movie-details{
-  /* text-align: center; */
-  display: flex;
-  /* border: 1px solid; */
-} 
-.movie-description{
+  /* .movie-details{ 
+  text-align: center; 
+  display: flex; 
+   border: 1px solid;
+ }   */
+/* .movie-description{
   display: flex;
   flex-direction: column;
-  /* border: 1px solid; */
+  border: 1px solid;
   margin-left: 20px;
-}
- .movie-image{
+} */
+ /* .movie-image{
   margin: 10px;
   margin-left: 20px;
-} 
+}  */
 .movie-ticket-details{
   margin-left: 10px;
 }
@@ -208,5 +228,12 @@ export default {
   padding: 5px;
   padding-left: 50px;
   background-color: #92a8d1;
+}
+.card-body{
+  margin-left: 40px;
+}
+.card{
+  margin-left: 50px; 
+  padding: 4px;
 }
 </style>
