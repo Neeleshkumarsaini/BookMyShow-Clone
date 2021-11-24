@@ -27,9 +27,9 @@ const routes = [
       import(/* webpackChunkName: "about" */ "../views/About.vue"),
   },
   {
-    path: "/error/:error",
+    path: "/error",
     name: "ErrorDisplay",
-    props: true,
+    
     component: ErrorDisplay
   }
   
