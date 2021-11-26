@@ -23,6 +23,7 @@ import EventCard from "@/components/EventCard.vue";
 //import axios from "axios";
 // import EventService from "@/services/EventService.js";
 import EventSearch from "@/components/EventSearch.vue";
+
 import { mapState } from 'vuex';
 
 export default {
@@ -32,15 +33,18 @@ export default {
     EventCard,
     EventSearch
   },
- 
+  
   created() {
+    
       this.$store.dispatch('fetchEvents', this.page)
       .catch( error => {
-        this.$store.dispatch('fetchError', error)
+        this.$store.commit('SET_ERROR', error)
        this.$router.push({
          name: 'ErrorDisplay',
+      
        })
     })
+    
   },
   watch:{
     page(val){
@@ -48,6 +52,7 @@ export default {
     }
   },
   computed: mapState(['events'])
+    
 };
 </script>
 
