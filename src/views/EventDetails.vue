@@ -165,7 +165,7 @@ export default {
   mounted() {
     this.$store.dispatch('fetchEvent', this.$route.params.id)
     .catch( error => {
-      this.$store.dispatch('fetchError', error)
+      this.$store.commit('SET_ERROR', error)
        this.$router.push({
         name: 'ErrorDisplay',
        })
