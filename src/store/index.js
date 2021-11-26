@@ -3,7 +3,7 @@ import EventService from '@/services/EventService.js'
 
 export default createStore({
   state: {
-    user: 'Neelesh',
+    // user: 'Neelesh',
     events: [],
     event: {},
     search: [],
@@ -29,7 +29,7 @@ export default createStore({
       return EventService.getEvents(page)
 	  .then(response => {
       commit('SET_EVENTS', response.data)
-		  
+		 
 	  })
 	  .catch(error => {
 		  throw(error)
@@ -67,9 +67,6 @@ export default createStore({
         })
       }
     },
-    fetchError({ commit }, error){
-      commit('SET_ERROR', error)
-    }
   },
   modules: {},
 });
