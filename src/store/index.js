@@ -29,7 +29,7 @@ export default createStore({
       return EventService.getEvents(page)
 	  .then(response => {
       commit('SET_EVENTS', response.data)
-		 
+		  
 	  })
 	  .catch(error => {
 		  throw(error)
@@ -44,8 +44,7 @@ export default createStore({
         return EventService.getEvent(id)
 	        .then(response => {
           commit('SET_EVENT', response.data)
-		      // this.event = response.data
-          //console.log(response.data)
+		     
 	      })
 	      .catch(error => {
 		    throw(error)
@@ -58,6 +57,7 @@ export default createStore({
         commit('SET_EVENT', existingEvent)
       }
       else{
+         if(val!=''){
         return EventService.getSearch(val)
         .then(response => {
           commit('SET_SEARCH_EVENTS', response.data.results)
@@ -66,7 +66,14 @@ export default createStore({
           throw(error)
         })
       }
+      else{
+        commit('SET_SEARCH_EVENTS', [])
+      }
+      }
     },
+    // fetchError({ commit }, error){
+    //   commit('SET_ERROR', error)
+    // }
   },
   modules: {},
 });
