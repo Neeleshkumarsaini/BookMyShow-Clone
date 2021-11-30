@@ -2,10 +2,13 @@
   <div class="search-bar"><EventSearch />
   </div>
   <h1 class="movies-heading">Movies</h1>
-  <div class="events">
+  <div v-if="search.length==0" class="events">
     <EventCard v-for="event in events" :key="event.id" :event="event" />
   </div>
-  <div class="pagination">
+  <div v-else class="events">
+    <EventCard v-for="searching in search" :key="searching.id" :event="searching" />
+  </div>  
+  <div v-if="search.length==0" class="pagination">
     <router-link id="page-prev" :to="{ name: EventList, query: { page: page - 1 } }"
       v-if="page != 1">&#60; Previous 
     </router-link>
@@ -23,7 +26,6 @@ import EventCard from "@/components/EventCard.vue";
 //import axios from "axios";
 // import EventService from "@/services/EventService.js";
 import EventSearch from "@/components/EventSearch.vue";
-
 import { mapState } from 'vuex';
 
 export default {
@@ -35,7 +37,7 @@ export default {
   },
   
   created() {
-    
+   
       this.$store.dispatch('fetchEvents', this.page)
       .catch( error => {
         this.$store.commit('SET_ERROR', error)
@@ -48,10 +50,16 @@ export default {
   },
   watch:{
     page(val){
+      
       this.$store.dispatch('fetchEvents', val)
     }
   },
-  computed: mapState(['events'])
+ 
+  computed: {
+    
+    ...mapState(['events', 'search'])
+    
+  },
     
 };
 </script>
