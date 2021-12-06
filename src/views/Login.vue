@@ -1,6 +1,6 @@
 <template>
 
-      <form>
+      <form @submit.prevent="login">
       <div class="form-group">
       <label for="exampleInputEmail1">Email address</label>
       <input v-model="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
@@ -12,6 +12,11 @@
     </div>
  
     <button type="submit" class="btn btn-primary">Login</button>
+    <div>
+      <router-link to="/register">
+        Don't have an account? Register.
+      </router-link>
+    </div>
     </form>
 </template>
     
@@ -23,5 +28,16 @@
         password: ''
       }
     },
+    methods: {
+    login () {
+      this.$store.dispatch('login', {
+          email: this.email,
+          password: this.password
+        })
+        .then(() => {
+          this.$router.push({ name: 'EventList' })
+        })
+    }
+  }
   }    
 </script>
