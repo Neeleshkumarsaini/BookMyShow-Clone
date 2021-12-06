@@ -1,7 +1,8 @@
 <template>
-  <div class="search-bar"><EventSearch />
+  <div v-if="!isLoading" class="search-bar"><EventSearch />
   </div>
   <h1 class="movies-heading">Movies</h1>
+  <div v-if="!isLoading">
   <div v-if="search.length==0" class="events">
     <EventCard v-for="event in events" :key="event.id" :event="event" />
   </div>
@@ -17,13 +18,13 @@
       >Next &#62;
     </router-link>
   </div> 
-
+  </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import EventCard from "@/components/EventCard.vue";
-//import axios from "axios";
+import axios from "axios";
 // import EventService from "@/services/EventService.js";
 import EventSearch from "@/components/EventSearch.vue";
 import { mapState } from 'vuex';
@@ -35,9 +36,19 @@ export default {
     EventCard,
     EventSearch
   },
-  
+   data() {
+     return {
+      server_response: null,
+      isLoading: true,
+    }
+  },
+ 
   created() {
-   
+      axios.get('//localhost:3002/dashboard').then(({ data }) => {
+      this.server_response = data.events
+      this.isLoading = false
+    })
+      
       this.$store.dispatch('fetchEvents', this.page)
       .catch( error => {
         this.$store.commit('SET_ERROR', error)
@@ -46,21 +57,20 @@ export default {
       
        })
     })
-    
+      
   },
   watch:{
     page(val){
-      
+     
       this.$store.dispatch('fetchEvents', val)
     }
   },
- 
+  
   computed: {
     
     ...mapState(['events', 'search'])
     
   },
-    
 };
 </script>
 
