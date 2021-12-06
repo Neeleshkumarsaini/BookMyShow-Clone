@@ -30,12 +30,6 @@ export default {
   background: linear-gradient(to right, #cf6a88, #16c0b0);
 }
 
-.nav-welcome {
-  margin-left: auto;
-  margin-right: 1rem;
-  color: white;
-}
-
 a {
   font-weight: bold;
   color: #2c3e50;
@@ -58,11 +52,5 @@ button,
   color: #2c3e50;
 }
 
-.logoutButton {
-  cursor: pointer;
-}
 
-.nav-welcome + button {
-  margin-left: 0;
-}
 </style>
