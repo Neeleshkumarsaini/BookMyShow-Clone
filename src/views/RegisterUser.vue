@@ -1,6 +1,6 @@
 <template>
-
-      <form>
+    
+      <form @submit.prevent="register">
       <div class="form-group">
       <label for="exampleInputEmail1">Email address</label>
       <input v-model="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
@@ -12,22 +12,29 @@
     </div>
  
     <button type="submit" class="btn btn-primary">Register</button>
+    <div>
+    <router-link to="/login">
+        Already have an account? Login.
+    </router-link>
+    </div>  
     </form>
-    </template>
+</template>
     
-    <script>
-        export default{
-            data(){
-                return {   
-                  email: '',
-                  password: ''
-                }
-            },
-            methods: {
-            register () {
-            this.$store
-            .dispatch('userRegisteration', {  email: this.email, password: this.password })
-          }
-        }
-      }    
-    </script>
+<script>
+  export default{
+    data(){
+      return {   
+        email: '',
+        password: ''
+      }
+    },
+    methods: {
+      register () {
+        this.$store.dispatch('register', {  email: this.email, password: this.password })
+        .then(() => {
+          this.$router.push({ name: 'EventList' })
+        })
+      }
+    }
+  }    
+</script>
