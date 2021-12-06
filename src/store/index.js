@@ -1,9 +1,10 @@
 import { createStore } from "vuex";
-import EventService from '@/services/EventService.js'
+import EventService from '@/services/EventService.js';
+import axios from 'axios'
 
 export default createStore({
   state: {
-    // user: 'Neelesh',
+    user: null,
     events: [],
     event: {},
     search: [],
@@ -22,6 +23,13 @@ export default createStore({
     SET_ERROR(state, payload){
       state.error = payload
       // console.log(state.error)
+    },
+    SET_USER_DATA (state, userData) {
+      state.user = userData
+      localStorage.setItem('user', JSON.stringify(userData))
+      axios.defaults.headers.common['Authorization'] = `Bearer ${
+        userData.token
+      }`
     }
   },
   actions: {
@@ -29,7 +37,7 @@ export default createStore({
       return EventService.getEvents(page)
 	  .then(response => {
       commit('SET_EVENTS', response.data)
-		  
+		 
 	  })
 	  .catch(error => {
 		  throw(error)
@@ -44,7 +52,7 @@ export default createStore({
         return EventService.getEvent(id)
 	        .then(response => {
           commit('SET_EVENT', response.data)
-		     
+		      
 	      })
 	      .catch(error => {
 		    throw(error)
@@ -57,7 +65,7 @@ export default createStore({
         commit('SET_EVENT', existingEvent)
       }
       else{
-         if(val!=''){
+         if(val!='' && val!=' '){
         return EventService.getSearch(val)
         .then(response => {
           commit('SET_SEARCH_EVENTS', response.data.results)
@@ -71,9 +79,25 @@ export default createStore({
       }
       }
     },
-    // fetchError({ commit }, error){
-    //   commit('SET_ERROR', error)
-    // }
+   
+    register ({ commit }, credentials) {
+      return axios.post('//localhost:3002/register', credentials)
+        .then(({ data }) => {
+          console.log('user data is: ', data)
+           commit('SET_USER_DATA', data)
+        })
+    },
+    login ({ commit }, credentials) {
+      return axios.post('//localhost:3002/login', credentials)
+        .then(({ data }) => {
+          commit('SET_USER_DATA', data)
+        })
+    }
+  },
+  getters: {
+    loggedIn(state) {
+      return !!state.user
+    }
   },
   modules: {},
 });
