@@ -22,7 +22,7 @@ app.get('/dashboard', verifyToken, (req, res) => { //verifyToken is middleware
       res.sendStatus(401)
     } else { 
       res.json({
-        events: yes
+        events: 'yes'
       })
     }
   })
@@ -31,25 +31,35 @@ app.get('/dashboard', verifyToken, (req, res) => { //verifyToken is middleware
 app.post('/register', (req, res) => {
   if (req.body) {
     const user = {
+     
       email: req.body.email,
       password: req.body.password
+      
     }
 
     const data = JSON.stringify(user, null, 2)
     var dbUserEmail = require('./db/user.json').email
+    var errorsToSend = []
 
-    if (dbUserEmail === req.body.email) {
-      res.sendStatus(400)
+    if (dbUserEmail === user.email) {
+      errorsToSend.push('An account with this email already exists.')
+    }
+    if (user.password.length < 2) {
+      errorsToSend.push('Password too short.')
+    }
+    if (errorsToSend.length > 0) {
+      res.status(400).json({ errors: errorsToSend })
     } else {
       fs.writeFile('./db/user.json', data, err => {
         if (err) {
           console.log(err + data)
         } else {
           const token = jwt.sign({ user }, 'the_secret_key')
+          
           res.json({
             token,
             email: user.email,
-            name: user.name
+           
           })
         }
       })
@@ -68,13 +78,13 @@ app.post('/login', (req, res) => {
     req.body.password === userInfo.password
   ) {
     const token = jwt.sign({ userInfo }, 'the_secret_key')
+    
     res.json({
       token,
       email: userInfo.email,
-      name: userInfo.name
     })
   } else {
-    res.sendStatus(400)
+    res.status(401).json({ error: 'Invalid login. Please try again.' })
   }
 })
 
