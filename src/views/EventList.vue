@@ -38,14 +38,15 @@ export default {
   },
    data() {
      return {
+      
       server_response: null,
       isLoading: true,
     }
   },
- 
   created() {
-      axios.get('//localhost:3002/dashboard').then(({ data }) => {
+        axios.get('https://a265-103-148-180-81.ngrok.io/dashboard').then(({ data }) => {
       this.server_response = data.events
+      
       this.isLoading = false
     })
       
@@ -61,7 +62,7 @@ export default {
   },
   watch:{
     page(val){
-     
+      
       this.$store.dispatch('fetchEvents', val)
     }
   },
@@ -71,6 +72,7 @@ export default {
     ...mapState(['events', 'search'])
     
   },
+    
 };
 </script>
 
