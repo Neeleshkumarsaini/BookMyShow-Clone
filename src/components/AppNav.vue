@@ -6,9 +6,15 @@
     BookMyShow
   </a>
 </nav>
-    <router-link to="/">Home</router-link>
-    <router-link to="/dashboard">Dashboard</router-link>
-    <router-link v-if="!loggedIn" to="/login" class="button">Login</router-link>
+    <router-link to="/">
+      Home
+    </router-link>
+    <router-link v-if="loggedIn" to="/dashboard">
+      Dashboard
+    </router-link>
+    <router-link v-if="!loggedIn" to="/login" class="button">
+      Login
+    </router-link>
   </div>
 </template>
 
@@ -30,6 +36,7 @@ export default {
   background: linear-gradient(to right, #cf6a88, #16c0b0);
 }
 
+
 a {
   font-weight: bold;
   color: #2c3e50;
@@ -50,6 +57,10 @@ button,
   background: white;
   text-decoration: none;
   color: #2c3e50;
+}
+
+.logoutButton {
+  cursor: pointer;
 }
 
 
