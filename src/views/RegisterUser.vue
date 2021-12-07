@@ -12,10 +12,15 @@
     </div>
  
     <button type="submit" class="btn btn-primary">Register</button>
+    <ul class="errors">
+        <li v-for="(error, index) in errors" :key="index">
+          {{ error }}
+        </li>
+    </ul>
     <div>
     <router-link to="/login">
         Already have an account? Login.
-    </router-link>
+      </router-link>
     </div>  
     </form>
 </template>
@@ -25,7 +30,8 @@
     data(){
       return {   
         email: '',
-        password: ''
+        password: '',
+        errors: null
       }
     },
     methods: {
@@ -34,7 +40,16 @@
         .then(() => {
           this.$router.push({ name: 'EventList' })
         })
+        .catch(err => {
+          this.errors = err.response.data.errors
+        })
       }
     }
   }    
 </script>
+
+<style scoped>
+  .errors{
+    color: red;
+  }
+</style>
