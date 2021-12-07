@@ -22,7 +22,7 @@ export default createStore({
     },
     SET_ERROR(state, payload){
       state.error = payload
-      // console.log(state.error)
+     
     },
     SET_USER_DATA (state, userData) {
       state.user = userData
@@ -37,7 +37,7 @@ export default createStore({
       return EventService.getEvents(page)
 	  .then(response => {
       commit('SET_EVENTS', response.data)
-		 
+	
 	  })
 	  .catch(error => {
 		  throw(error)
@@ -52,7 +52,7 @@ export default createStore({
         return EventService.getEvent(id)
 	        .then(response => {
           commit('SET_EVENT', response.data)
-		      
+	
 	      })
 	      .catch(error => {
 		    throw(error)
@@ -81,14 +81,14 @@ export default createStore({
     },
    
     register ({ commit }, credentials) {
-      return axios.post('//localhost:3002/register', credentials)
+      return axios.post('https://a265-103-148-180-81.ngrok.io/register', credentials)
         .then(({ data }) => {
           console.log('user data is: ', data)
            commit('SET_USER_DATA', data)
         })
     },
     login ({ commit }, credentials) {
-      return axios.post('//localhost:3002/login', credentials)
+      return axios.post('https://a265-103-148-180-81.ngrok.io/login', credentials)
         .then(({ data }) => {
           commit('SET_USER_DATA', data)
         })
