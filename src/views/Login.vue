@@ -1,6 +1,6 @@
 <template>
-
-      <form @submit.prevent="login">
+    
+      <form @submit.prevent="register">
       <div class="form-group">
       <label for="exampleInputEmail1">Email address</label>
       <input v-model="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
@@ -11,12 +11,17 @@
     <input v-model="password" type="password" class="form-control" id="exampleInputPassword1">
     </div>
  
-    <button type="submit" class="btn btn-primary">Login</button>
+    <button type="submit" class="btn btn-primary">Register</button>
+    <ul class="errors">
+        <li v-for="(error, index) in errors" :key="index">
+          {{ error }}
+        </li>
+    </ul>
     <div>
-      <router-link to="/register">
-        Don't have an account? Register.
+    <router-link to="/login">
+        Already have an account? Login.
       </router-link>
-    </div>
+    </div>  
     </form>
 </template>
     
@@ -25,19 +30,26 @@
     data(){
       return {   
         email: '',
-        password: ''
+        password: '',
+        errors: null
       }
     },
     methods: {
-    login () {
-      this.$store.dispatch('login', {
-          email: this.email,
-          password: this.password
-        })
+      register () {
+        this.$store.dispatch('register', {  email: this.email, password: this.password })
         .then(() => {
           this.$router.push({ name: 'EventList' })
         })
+        .catch(err => {
+          this.errors = err.response.data.errors
+        })
+      }
     }
-  }
   }    
 </script>
+
+<style scoped>
+  .errors{
+    color: red;
+  }
+</style>
