@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 const fs = require('fs')
 
 const app = express()
+const SECRET_KEY = "__ONGRAPH__"
 
 app.use(cors())
 app.use(bodyParser.json())
@@ -17,72 +18,70 @@ app.get('/', (req, res) => {
 
 
 app.get('/dashboard', verifyToken, (req, res) => { //verifyToken is middleware
-  jwt.verify(req.token, 'the_secret_key', err => { // verifies token
-    if (err) { // if error, respond with 401 code
+  jwt.verify(req.token, SECRET_KEY, err => { // verifies token
+    if (err) {
       res.sendStatus(401)
     } else { 
-      res.json({
-        events: 'yes'
+        res.json({
+        events: 'ok'
       })
     }
   })
 })
 
+
 app.post('/register', (req, res) => {
   if (req.body) {
     const user = {
-     
       email: req.body.email,
       password: req.body.password
-      
     }
-
-    const data = JSON.stringify(user, null, 2)
-    var dbUserEmail = require('./db/user.json').email
+    let data = JSON.parse(fs.readFileSync('./db/user.json'))
     var errorsToSend = []
 
-    if (dbUserEmail === user.email) {
+    if (data.users.filter((user) => { return user.email == req.body.email }).length) {
       errorsToSend.push('An account with this email already exists.')
-    }
-    if (user.password.length < 2) {
-      errorsToSend.push('Password too short.')
-    }
+    } 
     if (errorsToSend.length > 0) {
       res.status(400).json({ errors: errorsToSend })
     } else {
-      fs.writeFile('./db/user.json', data, err => {
-        if (err) {
-          console.log(err + data)
-        } else {
-          const token = jwt.sign({ user }, 'the_secret_key')
-          
-          res.json({
-            token,
-            email: user.email,
-           
-          })
-        }
-      })
-    }
+        data.users.push(user)
+        data = JSON.stringify(data, null, 2)
+
+        fs.writeFile('./db/user.json', data, err => {
+          if (err) {
+            console.log(err + data)
+          } else {
+              const token = jwt.sign( { email: user.email }, SECRET_KEY)
+              res.json({
+                      
+                token,
+                email: user.email
+
+              })
+            }
+        })
+      }
   } else {
     res.sendStatus(400)
   }
 })
 
+
 app.post('/login', (req, res) => {
   const userDB = fs.readFileSync('./db/user.json')
   const userInfo = JSON.parse(userDB)
   if (
-    req.body &&
-    req.body.email === userInfo.email &&
-    req.body.password === userInfo.password
+      req.body &&
+      userInfo.users.filter((user) => { return ((user.email == req.body.email) && (user.password == req.body.password)) }).length
   ) {
-    const token = jwt.sign({ userInfo }, 'the_secret_key')
-    
-    res.json({
-      token,
-      email: userInfo.email,
-    })
+      const token = jwt.sign({ email: req.body.email }, SECRET_KEY)
+      res.json({
+        token,
+        email: userInfo.email
+
+         
+      })
   } else {
     res.status(401).json({ error: 'Invalid login. Please try again.' })
   }
