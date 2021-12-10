@@ -5,7 +5,7 @@ const bodyParser = require('body-parser')
 const fs = require('fs')
 
 const app = express()
-const SECRET_KEY = "__ONGRAPH__"
+const SECRET_KEY = "__BMS__"
 
 app.use(cors())
 app.use(bodyParser.json())
@@ -19,7 +19,7 @@ app.get('/', (req, res) => {
 
 app.get('/dashboard', verifyToken, (req, res) => { //verifyToken is middleware
   jwt.verify(req.token, SECRET_KEY, err => { // verifies token
-    if (err) {
+    if (err) { 
       res.sendStatus(401)
     } else { 
         res.json({
@@ -41,6 +41,9 @@ app.post('/register', (req, res) => {
 
     if (data.users.filter((user) => { return user.email == req.body.email }).length) {
       errorsToSend.push('An account with this email already exists.')
+    }
+    if (user.password.length < 3) {
+      errorsToSend.push('Password too short.')
     } 
     if (errorsToSend.length > 0) {
       res.status(400).json({ errors: errorsToSend })
