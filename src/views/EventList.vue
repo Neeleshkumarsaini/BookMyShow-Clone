@@ -38,31 +38,33 @@ export default {
   },
    data() {
      return {
-      
+     
       server_response: null,
       isLoading: true,
     }
   },
+  
   created() {
-        axios.get('https://a265-103-148-180-81.ngrok.io/dashboard').then(({ data }) => {
+   
+        axios.get('https://da3c-103-157-240-78.ngrok.io/dashboard').then(({ data }) => {
       this.server_response = data.events
-      
+      // console.log(data.events)
       this.isLoading = false
-    })
       
-      this.$store.dispatch('fetchEvents', this.page)
+    })
+    this.$store.dispatch('fetchEvents', this.page)
       .catch( error => {
         this.$store.commit('SET_ERROR', error)
        this.$router.push({
          name: 'ErrorDisplay',
-      
+     
        })
     })
-      
+    
   },
   watch:{
     page(val){
-      
+     
       this.$store.dispatch('fetchEvents', val)
     }
   },
@@ -72,7 +74,7 @@ export default {
     ...mapState(['events', 'search'])
     
   },
-    
+   
 };
 </script>
 
