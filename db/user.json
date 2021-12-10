@@ -1,4 +1,36 @@
 {
-  "email": "a@gmail.com",
-  "password": "123"
+  "users": [
+    {
+      "email": "c@gmail.com",
+      "password": "123"
+    },
+    {
+      "email": "a@gmail.com",
+      "password": "123"
+    },
+    {
+      "email": "d@gmail.com",
+      "password": "123"
+    },
+    {
+      "email": "k@gmail.com",
+      "password": "123"
+    },
+    {
+      "email": "b@gmail.com",
+      "password": "123"
+    },
+    {
+      "email": "e@gmail.com",
+      "password": "123"
+    },
+    {
+      "email": "f@gmail.com",
+      "password": "123"
+    },
+    {
+      "email": "g@gmail.com",
+      "password": "123"
+    }
+  ]
 }
