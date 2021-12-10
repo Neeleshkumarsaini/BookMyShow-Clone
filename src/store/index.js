@@ -30,7 +30,14 @@ export default createStore({
       axios.defaults.headers.common['Authorization'] = `Bearer ${
         userData.token
       }`
-    }
+    },
+    CLEAR_USER_DATA (state) {
+      state.user = null
+      localStorage.removeItem('user')
+     
+      axios.defaults.headers.common['Authorization'] = null
+    },
+   
   },
   actions: {
     fetchEvents({ commit }, page){
@@ -81,17 +88,20 @@ export default createStore({
     },
    
     register ({ commit }, credentials) {
-      return axios.post('https://a265-103-148-180-81.ngrok.io/register', credentials)
+      return axios.post('https://da3c-103-157-240-78.ngrok.io/register', credentials)
         .then(({ data }) => {
           console.log('user data is: ', data)
            commit('SET_USER_DATA', data)
         })
     },
     login ({ commit }, credentials) {
-      return axios.post('https://a265-103-148-180-81.ngrok.io/login', credentials)
+      return axios.post('https://da3c-103-157-240-78.ngrok.io/login', credentials)
         .then(({ data }) => {
           commit('SET_USER_DATA', data)
         })
+    },
+    logout ({ commit }) {
+      commit('CLEAR_USER_DATA')
     }
   },
   getters: {
