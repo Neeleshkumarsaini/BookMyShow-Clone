@@ -15,6 +15,9 @@
     <router-link v-if="!loggedIn" to="/login" class="button">
       Login
     </router-link>
+    <button v-else type="button" class="logoutButton" @click="logout">
+      Logout
+    </button>
   </div>
 </template>
 
@@ -23,6 +26,15 @@ import { mapGetters } from 'vuex'
 export default {
   computed: {
   ...mapGetters(['loggedIn'])
+  },
+  methods: {
+    logout () {
+      this.$store.dispatch('logout')
+      this.$router.push({
+        name: 'Home'
+      });
+      // console.log('Logged out')
+    }
   }
 }
 </script>
@@ -35,7 +47,6 @@ export default {
   padding: 0.2em 1em;
   background: linear-gradient(to right, #cf6a88, #16c0b0);
 }
-
 
 a {
   font-weight: bold;
@@ -62,6 +73,5 @@ button,
 .logoutButton {
   cursor: pointer;
 }
-
 
 </style>
