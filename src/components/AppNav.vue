@@ -15,7 +15,7 @@
     <router-link v-if="!loggedIn" to="/login" class="button">
       Login
     </router-link>
-    <button v-else type="button" class="logoutButton" @click="logout">
+    <button v-else type="button" class="button" @click="logout">
       Logout
     </button>
   </div>
@@ -25,7 +25,8 @@
 import { mapGetters } from 'vuex'
 export default {
   computed: {
-  ...mapGetters(['loggedIn'])
+  ...mapGetters(['loggedIn']),
+  
   },
   methods: {
     logout () {
@@ -48,6 +49,12 @@ export default {
   background: linear-gradient(to right, #cf6a88, #16c0b0);
 }
 
+/* .nav-welcome {
+  margin-left: auto;
+  margin-right: 1rem;
+  color: white;
+} */
+
 a {
   font-weight: bold;
   color: #2c3e50;
@@ -62,16 +69,39 @@ a {
   border-bottom: 2px solid #fff;
 }
 
-button,
 .button {
   margin-left: auto;
-  background: white;
-  text-decoration: none;
+  /* background-color: #cf6a88; */
+  /* background: #c0a716; */
+    background: white;
+  border-radius: 5px;
+  font-size: 18px;
+  width: 80px;
+  height: 50px;
+  /* color: white; */
   color: #2c3e50;
-}
-
-.logoutButton {
+  padding: 20px;
+  box-shadow: inset 0 -0.6em 1em -0.35em rgba(0, 0, 0, 0.17),
+    inset 0 0.6em 2em -0.3em rgba(255, 255, 255, 0.15),
+    inset 0 0 0em 0.05em rgba(255, 255, 255, 0.12);
+  text-align: center;
+  padding: 10px;
   cursor: pointer;
 }
 
+ /* button,
+.button {
+  margin-left: auto;
+  background: white; */
+  /* text-decoration: none; */
+  /* color: #2c3e50;
+}  */
+
+/* .logoutButton {
+  cursor: pointer;
+} */
+
+/* .nav-welcome + button {
+  margin-left: 0;
+} */
 </style>
